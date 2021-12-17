@@ -98,7 +98,7 @@ https://sgw.chal.imaginaryctf.org/__repl
 * Techniques: `SSTI`
 * Overview two challenge have 1 name box
 * Two challenges same a source code so i use 1 payload for 2 challanges
-* In this challenges i and my brother [Taidh](https://github.com/DauHoangTai) solved
+* In this challenges i and my brother solved
 ![Main function](baby-jinjail/1.PNG)
 ![Main function](JinJail/1.PNG)
 # Source Code Analysis
@@ -233,3 +233,5 @@ app.run('0.0.0.0', 1337)
 # FLAG
 * Baby-jinjail `idek{n0w_g0_s0lv3_j1nj41l_pl34se}`
 * JinJail `idek{us1nG_f1lt3rs_t0_byP4s5_f1lt3r5}`
+### Thanks
+* Thanks bro [Taidh](https://github.com/DauHoangTai) supported me ^_^
