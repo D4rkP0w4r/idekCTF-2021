@@ -77,3 +77,20 @@ http://memory-of-php.rf.gd/secure-bypass.php?url=d4rkp0w4rrrrrrrr%00
 # FLAG
 ![Main function](Memory-of-PHP/4.PNG)
 * `idek{nu11_by1e_bypass1ng_1s_C0ol!_ftw_br0!!!!}`
+# Sourceless-Guessy-Web
+* The challenges only main page
+![Main function](Sourceless-Guessy-Web/1.PNG)
+* I access `robots.txt` server return `replit.com`
+![Main function](Sourceless-Guessy-Web/2.PNG)
+* I think this challenges involve `replit` i used `dirsearch` but it's nothing 
+![Main function](Sourceless-Guessy-Web/3.PNG)
+* I found a tutorial about `replit` if you add a `/__repl` to the url you'll get redirected to the source repl.
+# Payload
+```c
+https://sgw.chal.imaginaryctf.org/__repl
+```
+* Well, finally i have a flag =))))
+# Flag
+![Main function](Sourceless-Guessy-Web/4.PNG)
+* `idek{why_do_people_keep_st0ring_secrets_0n_replit_w1th0ut_3nv}`
+
